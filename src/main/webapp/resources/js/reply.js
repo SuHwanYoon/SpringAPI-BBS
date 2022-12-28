@@ -1,28 +1,31 @@
 console.log("Reply Module.....");
 var replyService = {};
 
-var replyService = (function(){
+
+var replyService = (
+	function(){
 	
-	function add(reply, callback,error){
-		console.log("reply...................");
-	
-	$.ajax({
-	type: 'post',
-	url: '/replies/new',
-	data : JSON.stringify(reply),
-	contentType : "application/json; charset=utf-8",
-	success : function(result,status,xhr){
-			if(callback){
-				callback(result);
-			}
-		},
-		error : function(xhr,status,er){
-				if(error){
-					error(er);
+		function add(reply, callback,error){
+			console.log("reply...................");
+		
+			$.ajax({
+			type: 'post',
+			url: '/replies/new',
+			data : JSON.stringify(reply),
+			contentType : "application/json; charset=utf-8",
+			success : function(result,status,xhr){
+					if(callback){
+						callback(result);
+					}
+				},
+				error : function(xhr,status,er){
+						if(error){
+							error(er);
+						}
 				}
-		}
-	 })
-  }
+			}
+			)
+	  	}
   
   
 	function getList(param, callback, error) {
@@ -43,13 +46,20 @@ var replyService = (function(){
 		});
 	}
 	
-	function remove(){
+	function remove(rno,callback,error){
 		$.ajax({
 			type: 'delete',
-			url: ''+rno,
-			success: function(){
-			
-			}, 
+			url: '/replies/'+rno,
+			success: function(deleteResult,status,xhr){
+				  if(callback){
+						callback(deleteResult)			  
+				  }
+			},
+			error: function(){
+				if(error){
+					error(er);
+				}
+			} 
 		
 		});
 	}

@@ -59,19 +59,33 @@
     				      				
     				      				var bnoValue = '<c:out value = "${board.bno}"/>';
     				      				
-//     				      				replyService.add(
-//     				      					{reply:"JS Test", replyer:"tester", bno:bnoValue},//reply
+    				      				replyService.add(
+    				      					{reply:"JS Test", replyer:"tester", bno:bnoValue},//reply
     				      					
-//     				      					function(result){//callback  function("success")
-//     				      						alert("RESULT:"+ result);
-//     				      					}
-//     				      				);
+    				      					function(result){//callback  function("success")
+    				      						alert("RESULT:"+ result);
+    				      					}
+    				      				);
     				      				
     				      				replyService.getList({bno:bnoValue,page:1},function(list){
     				      					for (var i = 0, len = list.length||0; i < len; i++) {
 												console.log(list[i]);
 											}
     				      				});
+    				      				
+    				      				replyService.remove(19,function(count){
+	    				      					
+		    				      					console.log(count);
+		    				      					
+		    				      					  if(count === "success"){
+		    				      							alert("remove");
+		    				      					  }
+	    				      					},
+    				      					
+	    				      					function(err){
+	    				      						alert("error");	
+	    				      			        }
+    				      			   );
     				      				
     				      			</script>
     				      			
