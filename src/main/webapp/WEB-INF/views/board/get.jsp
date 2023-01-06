@@ -85,7 +85,9 @@
 			     </div>
 			      <!-- /.panel .chat-panel -->
 			
-				<div class="panel-footer"></div>
+				<div class="panel-footer">
+				
+				</div>
 			
 			
 			</div>
@@ -169,34 +171,108 @@
      						
      					}
      					
+     					
+     				    var modal = $(".modal");
+         			    var modalInputReply = modal.find("input[name='reply']");
+         			    var modalInputReplyer = modal.find("input[name='replyer']");
+         			    var modalInputReplyDate = modal.find("input[name='replyDate']");
+         			    
+         			    var modalModBtn = $("#modalModBtn");
+         			    var modalRemoveBtn = $("#modalRemoveBtn");
+         			    var modalRegisterBtn = $("#modalRegisterBtn");
+         			    
+         			    $("#modalCloseBtn").on("click", function(e){
+         			    	
+         			    	modal.modal('hide');
+         			    });
+         			    
+         			    $("#addReplyBtn").on("click", function(e){
+         			      
+         			      modal.find("input").val("");
+         			      modalInputReplyDate.closest("div").hide();
+         			      modal.find("button[id !='modalCloseBtn']").hide();
+         			      
+         			      modalRegisterBtn.show();
+         			      
+         			      $(".modal").modal("show");
+         			      
+         			    });
+         			    
+         			    modalRegisterBtn.on("click",function(e){
+         			       
+         			       var reply = {
+         			             reply: modalInputReply.val(),
+         			             replyer:modalInputReplyer.val(),
+         			             bno:bnoValue
+         			           };
+         			       replyService.add(reply, function(result){
+         			         
+         			         alert(result);
+         			         
+         			         modal.find("input").val("");
+         			         modal.modal("hide");
+         			         
+         			         //showList(1);
+         			         showList(-1);
+         			         
+         			       });
+         			       
+         			     });
+         			    
+         			    $(".chat").on("click","li",function(e){
+         			    	
+         			    	var rno = $(this).data("rno");
+         			    	
+         			    	replyService.get(rno,function(reply){
+         			    		
+         			    		modalInputReply.val(reply.reply);
+         			    		modalInputReplyer.val(reply.replyer);
+         			    		modalInputReplyDate.val(replyService.displayTime(reply.replyDate))
+         			    		.attr("readonly","readonly");
+         			    		modal.data("rno",reply.rno);
+         			    		
+         			    		modal.find("button[id != 'modalCloseBtn']").hide();
+         			    		modalModBtn.show();
+         			    		modalRemoveBtn.show();
+         			    		
+         			    		$(".modal").modal("show");
+         			    		
+         			    	});
+         			    	
+         			    });
+         			    
+         			   modalModBtn.on("click",function(e){
+         				  
+         				   var reply = {rno:modal.data("rno"),reply:modalInputReply.val() };
+         				   
+         				  replyService.update(reply,function(result){
+         					 	
+         					  alert(result);
+         					  modal.modal("hide");
+         					  showList(1);
+         					  
+         				  });
+         			   });
+     					
+         			  modalRemoveBtn.on("click",function(e){
+         				 
+         				  var rno = modal.data("rno");
+         				  
+         				 replyService.remove(rno,function(result){
+         					
+         					 alert(result);
+         					 modal.modal("hide");
+         					 showList(1);
+         					 
+         				 });
+         				  
+         			  });
+         			   
      				});
      			
      				
-     			    var modal = $(".modal");
-     			    var modalInputReply = modal.find("input[name='reply']");
-     			    var modalInputReplyer = modal.find("input[name='replyer']");
-     			    var modalInputReplyDate = modal.find("input[name='replyDate']");
+     			
      			    
-     			    var modalModBtn = $("#modalModBtn");
-     			    var modalRemoveBtn = $("#modalRemoveBtn");
-     			    var modalRegisterBtn = $("#modalRegisterBtn");
-     			    
-     			    $("#modalCloseBtn").on("click", function(e){
-     			    	
-     			    	modal.modal('hide');
-     			    });
-     			    
-     			    $("#addReplyBtn").on("click", function(e){
-     			      
-     			      modal.find("input").val("");
-     			      modalInputReplyDate.closest("div").hide();
-     			      modal.find("button[id !='modalCloseBtn']").hide();
-     			      
-     			      modalRegisterBtn.show();
-     			      
-     			      $(".modal").modal("show");
-     			      
-     			    });
      			</script>
      			
      			
